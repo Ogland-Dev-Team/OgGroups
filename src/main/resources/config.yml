@@ -1,0 +1,36 @@
+#-------------------------------------------------------#
+#                     OgGroups                          #
+#-------------------------------------------------------#
+#   A Plugin created for the Ogland Server by Vennge    #
+#   and BigTallahasee that will allow for users to      #
+#   easily create groups, gangs, etc. with rank system  #
+#   and all!                                            #
+#-------------------------------------------------------#
+#   Groups General                                      #
+#-------------------------------------------------------#
+
+## Can players create new groups! ##
+creation-allowed: true
+
+## Can players delete groups! ##
+deletion-allowed: true
+
+## Can players transfer groups! ##
+transfers-allowed: true
+
+#-------------------------------------------------------#
+#   Groups Economy                                      #
+#-------------------------------------------------------#
+
+## How much does it cost for the player to start a group! ##
+startup-fee: 7500.0
+
+## How much does it cost for the player to delete a group! ##
+deletion-fee: 0.0
+
+## How much does it cost for the player to transfer the group to another player! ##
+transfer-fee: 2500.0
+
+## How much does the player have to pay daily to upkeep the group! ##
+daily-upkeep: 0.0
+

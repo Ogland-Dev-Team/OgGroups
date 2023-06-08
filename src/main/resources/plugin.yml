@@ -1,0 +1,11 @@
+name: OgGroups
+version: '${project.version}'
+main: oggroups.OgGroups
+api-version: 1.19
+commands:
+  oggroups:
+    description: main command to operate OgGroups plugin
+    usage: /<command>
+  oggadmin:
+    description: admin command to operate OgGroups Plugin
+    usage: /<command>
