@@ -27,6 +27,8 @@ public final class OgGroups extends JavaPlugin {
         getCommand("oggroups").setExecutor(new OgGroupsCmd());
         getCommand("oggadmin").setExecutor(new OgGroupsAdminCmd());
 
+
+
     }
 
     @Override
