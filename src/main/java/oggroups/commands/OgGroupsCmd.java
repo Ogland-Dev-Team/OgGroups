@@ -4,9 +4,12 @@ import net.milkbowl.vault.economy.Economy;
 import oggroups.OgGroups;
 import oggroups.configs.GroupConfig;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class OgGroupsCmd implements CommandExecutor {
@@ -25,18 +28,17 @@ public class OgGroupsCmd implements CommandExecutor {
             boolean transferAllowed = ogGroups.getConfig().getBoolean("transfers-allowed");
 
             if (command.getName().equals("oggroups")) {
-                p.sendMessage("Command has activated properly!");
                 if (args[0].equalsIgnoreCase("create")) {
                     if (creationAllowed) {
                         if (args[1].equalsIgnoreCase("")) {
-                            p.sendMessage(pluginName + "Please give a valid group name!");
+                            p.sendMessage(ChatColor.GOLD + pluginName + ChatColor.RED + "Please give a valid group name!");
                             return true;
                         } else {
                             double creationAmount = ogGroups.getConfig().getDouble("startup-fee");
 
                             // Checking if the player balance is greater than 0
                             if (econ.has(p, creationAmount)) {
-                                String broadcastMsg = pluginName + p.getName() + "has created a new group called " + args[1];
+                                String broadcastMsg = ChatColor.GOLD + pluginName + ChatColor.GREEN + p.getName() + " has created a new group called " + args[1];
 
                                 // Withdrawing the group creation fee from the player that runs the command!
                                 econ.withdrawPlayer(p, creationAmount);
@@ -44,57 +46,56 @@ public class OgGroupsCmd implements CommandExecutor {
                                 //TODO: Create a custom config based off the name provide in args[1]
                                 // Using the player as the Owner!
 
-
                                 // Sending a confirmation that group was created then announcing the creation of a group
                                 // to the server!
-                                p.sendMessage(pluginName + "Created a new group!");
+                                p.sendMessage(ChatColor.GOLD + pluginName + ChatColor.GREEN + "Created a new group!");
                                 Bukkit.broadcast(broadcastMsg, "");
                             } else {
-                                p.sendMessage(pluginName + "Insufficient Funds to create a new group!");
+                                p.sendMessage(ChatColor.GOLD + pluginName + ChatColor.RED + "Insufficient Funds to create a new group! Required : $" + String.valueOf(creationAmount));
                             }
                         }
                     } else {
-                        p.sendMessage(pluginName + "Creating groups has been disabled on the server!");
+                        p.sendMessage(ChatColor.GOLD + pluginName + ChatColor.RED + "Creating groups has been disabled on the server!");
                         return true;
                     }
                 } else if (args[0].equalsIgnoreCase("delete")) {
                     if (deletionAllowed) {
                         if (args[1].equals("")) {
-                            p.sendMessage(pluginName + "Please give a valid group name!");
+                            p.sendMessage(ChatColor.GOLD + pluginName + ChatColor.RED + "Please give a valid group name!");
                             return true;
                         } else {
                             double deletionAmount = ogGroups.getConfig().getDouble("deletion-fee");
 
                             // Checking if the player has the amount set in the config
                             if (econ.has(p, deletionAmount)) {
-                                String broadcastMsg = pluginName + p.getName() + " has just deleted the group " + args[1];
+                                String broadcastMsg = ChatColor.GOLD + pluginName + ChatColor.GREEN + p.getName() + " has just deleted the group " + args[1];
 
                                 // Withdrawing the deletion fee from the player!
                                 econ.withdrawPlayer(p, deletionAmount);
 
-                                // TODO: Delete the custom config for the group that is being deleted!
+                                // Delete the groups section out of the groups.yml
 
-                                p.sendMessage(pluginName + "Deleting the given group!");
+                                p.sendMessage(ChatColor.GOLD + pluginName + ChatColor.GREEN + "Deleting the group " + args[2]);
                                 Bukkit.broadcast(broadcastMsg, "");
                             } else {
-                                p.sendMessage(pluginName + "Insufficient Funds to delete this group!");
+                                p.sendMessage(ChatColor.GOLD + pluginName + ChatColor.RED + "Insufficient Funds to delete this group! Required: $" + String.valueOf(deletionAmount));
                             }
                         }
                     } else {
-                        p.sendMessage(pluginName + "Deleting groups has been disabled on the server!");
+                        p.sendMessage(ChatColor.GOLD + pluginName + ChatColor.RED + "Deleting groups has been disabled on the server!");
                         return true;
                     }
                 } else if (args[0].equalsIgnoreCase("transfer")) {
                     if (transferAllowed) {
                         if (args[1].equals("") || args[2].equals("")) {
-                            p.sendMessage(pluginName + "Please enter a valid value!");
+                            p.sendMessage(ChatColor.GOLD + pluginName + ChatColor.RED + "Please enter a valid value!");
                             return true;
                         } else {
                             double transferAmount = ogGroups.getConfig().getDouble("transfer-fee");
 
                             if (econ.has(p, transferAmount)) {
-                                String pMsg = pluginName + "Transferring ownership of " + args[1] + " to " + args[2];
-                                String broadcastMsg = pluginName + p.getName() + " has transferred ownership of " + args[1] + " to " + args[2];
+                                String pMsg = ChatColor.GOLD + pluginName + ChatColor.GREEN + "Transferring ownership of " + args[1] + " to " + args[2];
+                                String broadcastMsg = ChatColor.GOLD + pluginName + ChatColor.GREEN + p.getName() + " has transferred ownership of " + args[1] + " to " + args[2];
 
                                 // Withdraw the transfer fee from the player!
                                 econ.withdrawPlayer(p, transferAmount);
@@ -106,11 +107,11 @@ public class OgGroupsCmd implements CommandExecutor {
                                 p.sendMessage(pMsg);
                                 Bukkit.broadcast(broadcastMsg, "");
                             } else {
-                                p.sendMessage(pluginName + "Insufficient Funds to transfer this group!");
+                                p.sendMessage(ChatColor.GOLD + pluginName + ChatColor.RED + "Insufficient Funds to transfer this group! Required: $" + String.valueOf(transferAmount));
                             }
                         }
                     } else {
-                        p.sendMessage(pluginName + "Transfering groups has been disabled on the server!");
+                        p.sendMessage(ChatColor.GOLD + pluginName + ChatColor.RED + "Transfering groups has been disabled on the server!");
                         return true;
                     }
                 }
